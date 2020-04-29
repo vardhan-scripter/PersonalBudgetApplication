@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+}
+.body {
+  width: 100%;
+  min-height: 100vh;
+  max-height: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+main{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.row-down {
+  width: 40%;
+}
+.List-Items h1{
+  color: #34A68B;
+  text-align: left;
+  padding: 1.5rem 0.5rem;
+  font-size: 25px;
+}
+.Total-count {
+  text-align: right;
+  color: #171717;
+  font-size: 20px;
+  padding: 0 0.5rem 2rem 0rem;
+}
+button {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .row-up {
+      width: 90%;
+  }
+  .row-down {
+      width: 90%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+  .row-up {
+      width: 70%;
+  }
+  .row-down {
+      width: 65%;
+  }
+}
