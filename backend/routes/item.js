@@ -1,5 +1,5 @@
 const express = require("express");
-
+const passport = require("passport");
 const router = express.Router();
 const Item = require("../models/Item");
 
@@ -8,18 +8,45 @@ const Item = require("../models/Item");
 //@desc Adding of new item
 //@access PRIVATE
 
-router.post("/addItem",(req,res) => {
+router.post("/addItem",passport.authenticate("jwt", {session: false}),(req,res) => {
     // console.log(req.body);
     const newItem = new Item({
         id: Date.now().toString(),
         name: req.body.name,
         description: req.body.description,
+        email: req.user.email,
         cost: req.body.cost,
-        done: req.body.done,
+        done: false,
     })
     newItem.save().then(item => {
         res.redirect("../../")
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        res.json({success: false, message: "Internal server error"})
+    })
+})
+
+//@type  POST
+//@route  /addDocument
+//@desc Adding of new arraay of items
+//@access PRIVATE
+
+router.post("/addDocument",passport.authenticate("jwt", {session: false}),(req,res) => {
+    var items = req.body;
+    items.forEach(item => {
+        item.email = req.user.email;
+    });
+    console.log(items)
+    Item.insertMany(items)
+        .then(success => {
+            if(!success) {
+                res.json({success: false, message: "Error in inserting document"})
+            }else{
+                res.json({success: true})
+            }
+        })
+        .catch(err => {
+            res.json({success: false, message: "Internal server error"})
+        })
 })
 
 //@type POST
@@ -27,16 +54,18 @@ router.post("/addItem",(req,res) => {
 //@desc Update of particular item complete status
 //@access PRIVATE
 
-router.post("/completeItem", (req,res) => {
+router.post("/completeItem",passport.authenticate("jwt", {session: false}), (req,res) => {
     Item.findOne({id: req.body.id}).then(item => {
         if(!item){
-            res.json({failure: "No item found"})
+            res.json({success: false, message: "No item found"})
         }
         item.done = true;
         item.save().then(success => {
             res.redirect("../../")
         }).catch(err => console.log(err));
-    }).catch(err => console.log(err));
+    }).catch(err => {
+        res.json({success: false, message: "Internal server error"})
+    })
 })
 
 //@type DELETE
@@ -44,18 +73,22 @@ router.post("/completeItem", (req,res) => {
 //@desc delete a particular item
 //@access PRIVATE
 
-router.delete("/deleteItem", (req,res) => {
+router.delete("/deleteItem",passport.authenticate("jwt", {session: false}), (req,res) => {
     Item
     .findOneAndDelete({id: req.body.id})
     .then(success => {
         if(!success){
-            res.json({error: "no such item found"});
+            res.json({success: false, message: "no such item found"});
         }
         Item.find().sort({id: -1}).then(items => {
-            res.json(items);
-        }).catch(err => console.log(err));
+            res.json({success: false,items: items});
+        }).catch(err => {
+            res.json({success: false, message: "Internal server error"})
+        })
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        res.json({success: false, message: "Internal server error"})
+    })
 })
 
 module.exports = router;

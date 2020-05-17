@@ -59,7 +59,7 @@ class AddItem extends Component {
                             id="cost"
                             value={this.state.cost}
                             onChange={e => {
-                                this.setState({ cost: e.target.value });
+                                this.setState({ cost: parseInt(e.target.value) });
                             }}
                         />
                     </div>
