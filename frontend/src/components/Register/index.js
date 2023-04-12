@@ -16,7 +16,8 @@ class Register extends Component {
     handleRegister(){
         const data = this.state;
         this.setState({status: true})
-        if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) && data.name.length > 0 && data.password.length > 0 && data.email.length > 0){
+        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        if(data.email.match(validRegex) && data.name.length > 0 && data.password.length > 0 && data.email.length > 0){
             fetch('http://localhost:5000/auth/register',{
                 method: "POST",
                 mode: 'cors',

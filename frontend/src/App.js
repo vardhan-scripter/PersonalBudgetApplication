@@ -29,7 +29,7 @@ class App extends Component {
     const items = JSON.parse(sessionStorage.getItem('items'));
     if(items !== null && items.length > 0){
       var output = confirm("Do you want to save these items to your account");
-      if(output == false){
+      if(output === false){
         sessionStorage.removeItem('items');
       }
     }

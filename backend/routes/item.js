@@ -9,7 +9,6 @@ const Item = require("../models/Item");
 //@access PRIVATE
 
 router.post("/addItem",passport.authenticate("jwt", {session: false}),(req,res) => {
-    // console.log(req.body);
     const newItem = new Item({
         id: Date.now().toString(),
         name: req.body.name,
@@ -35,7 +34,6 @@ router.post("/addDocument",passport.authenticate("jwt", {session: false}),(req,r
     items.forEach(item => {
         item.email = req.user.email;
     });
-    console.log(items)
     Item.insertMany(items)
         .then(success => {
             if(!success) {

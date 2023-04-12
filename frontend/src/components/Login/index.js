@@ -14,7 +14,8 @@ class Login extends Component {
     }
     handleLogin(){
         const data = this.state;
-        if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) && data.email.length > 0 && data.password.length > 0){
+        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        if(data.email.match(validRegex) && data.email.length > 0 && data.password.length > 0){
             this.setState({status: true})
             fetch('http://localhost:5000/auth/login',{
                 method: "POST",

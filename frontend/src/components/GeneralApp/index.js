@@ -72,7 +72,7 @@ class GeneralApp extends Component {
     completeItem(id){
         const items = this.state.items;
         items.map(item => {
-            if(item.id === parseInt(id)){
+            if(item.id === parseInt(id, 10)){
                 item.done = true;
             }
             return item;
